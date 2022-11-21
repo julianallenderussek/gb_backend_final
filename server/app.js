@@ -1,20 +1,21 @@
 const express=require('express');
 const bodyParser=require('body-parser');
 require("dotenv").config(); 
+const { Transaction, Address } = require("./model")
+const { db } = require("./database")
 
-const port=3000;
+const port=4000;
 const app=express();
   
-const MONGO_URI = process.env.MONGO_URI
-
 // Parses the text as url encoded data
 app.use(bodyParser.urlencoded({extended: true}));
  
 // Parses the text as json
 app.use(bodyParser.json());
  
-app.get("/", (req, res) => {
-    return res.status(200).json({message: "this works "})
+app.get("/", async (req, res) => {
+    const addresses = await Address.find({})
+    return res.status(200).json({data: addresses})
 })
 
 app.listen(port, function() {
