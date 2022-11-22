@@ -9,7 +9,7 @@ const TransactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  amounte: {
+  amount: {
     type: Number,
     default: 0,
   },
@@ -34,7 +34,7 @@ const AddressSchema = new mongoose.Schema({
   }
 });
 
-const User = mongoose.model("Transaction", TransactionSchema);
+const Transaction = mongoose.model("Transaction", TransactionSchema);
 const Address = mongoose.model("Address", AddressSchema);
 
-module.exports = { User, Address };
+module.exports = { Transaction, Address };
