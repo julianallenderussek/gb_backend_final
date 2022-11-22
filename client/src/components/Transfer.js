@@ -11,6 +11,8 @@ const Transfer =() => {
         getBalance, transactions, receipt, setReceipt } = context;
     const [amount, setAmount] = useState("")
 
+    // TO DO Terminar post transfer
+
     const handleTransaction = (e) => {
         console.log("receipt", receipt, "----" , "balance:", balance);
         if (amount > 0 && amount < balance) {

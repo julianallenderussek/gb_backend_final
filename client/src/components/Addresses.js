@@ -14,11 +14,12 @@ const Addresses = () => {
             <div className='transaction'>
                 {
                     addresses.map((addresse) => {
+                        console.log(addresse);
                         return (
                             <h2>
-                                <Link to={`/transfer/${addresse}`}
+                                <Link to={`/transfer/${addresse._id}`}
                                 from={currentWallet}
-                                >{addresse}</Link>
+                                >{addresse._id}</Link>
                             </h2>
                         )
                     })

@@ -1,49 +1,58 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { currentTransactions, addresses } from "../data";
 export const AppContext = React.createContext();
 
 export const AppContextProvider = ({ children }) => {
-  const [balance, setBalance] = useState(0)
-  const [transactions, setTransactions] = useState([])
-  console.log();
-  const [currentWallet, setCurrentWallet] = useState("")
-  const [receipt, setReceipt] = useState(false)
-  
-  const getBalance = async () => {
-    const plusTransactions = transactions.filter(trans => trans.to === currentWallet
-      )
-      const minusTransactions = transactions.filter(trans => trans.from === currentWallet
-        )
-        const plusSum = await plusTransactions.reduce((total, obj) => total + obj.value, 0)
-        const minusSum = await minusTransactions.reduce((total, obj) => total + obj.value, 0)
-        console.log(plusTransactions, minusTransactions)
-        console.log(plusSum, minusSum);
-        const newBalance = plusSum - minusSum
-    setBalance(newBalance)
-    console.log("transactions", transactions);
+  const [addresses, setAddresses] = useState([]);
+  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [currentWallet, setCurrentWallet] = useState(null);
+  const [receipt, setReceipt] = useState(false);
+
+  const getBalance = async(wallet) => {
+    console.log(`http://localhost:4000/account/balance/${wallet}`);
+    const response = await axios.get(`http://localhost:4000/account/balance/${wallet}`);
+    setBalance(response.data.account.balance)
+    console.log(response.data.account.balance);
   }
-      
+
+  const fetchAccounts = async () => {
+    const response = await axios.get("http://localhost:4000/account/addresses");
+    setAddresses(response.data.addresses);
+    setCurrentWallet(response.data.addresses[1]._id);
+    getBalance(response.data.addresses[1]._id)
+  };
+
+  const fetchTransactions = async () => {
+    const response = await axios.get(
+      "http://localhost:4000/transaction/history"
+    );
+    setTransactions(response.data.transactions)
+  };
+
   useEffect(() => {
-    console.log("This stuff", currentTransactions);
-    setTransactions(currentTransactions)
-    setCurrentWallet(addresses[0])
-  }, [])
-  
-    return (
-        <AppContext.Provider
-        value={{
+    fetchAccounts();
+    fetchTransactions();
+  }, []);
+
+  return (
+    <AppContext.Provider
+      value={{
         balance,
         setBalance,
         addresses,
-          transactions,
+        transactions,
         setTransactions,
         currentWallet,
         getBalance,
         receipt,
-        setReceipt
+        setReceipt,
+        fetchTransactions
       }}
     >
-      { children }
+      {children}
     </AppContext.Provider>
-  )
-}
+  );
+};
+

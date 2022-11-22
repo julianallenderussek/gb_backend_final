@@ -1,9 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppContext } from './AppContext';
 import "./Transactions.css"
 
 const Transactions = () => {
-    const { transactions } = useContext(AppContext)
+    const { transactions, fetchTransactions } = useContext(AppContext)
+    
+    useEffect(() => {
+        fetchTransactions();
+    }, []);
 
     return (
         <div className='page-wrapper'>
@@ -19,15 +23,15 @@ const Transactions = () => {
 };
 
 export const Transaction = ({ transaction }) => {
-    const { hash, status, timestamp, from, to, value, currency} = transaction  
+    const { receiptHash, status, timestamp, source, destination, amount, currency} = transaction  
     return (
         <div className='transaction'>    
-            <LabelDiv title="Transaction Hash" data={hash} />
+            <LabelDiv title="Transaction Hash" data={receiptHash} />
             <LabelDiv title="Status" data={status} />
             <LabelDiv title="Timestamp" data={timestamp} />
-            <LabelDiv title="From" data={from} />
-            <LabelDiv title="To" data={to} />
-            <LabelDiv title="Value" data={value} currency={currency} />
+            <LabelDiv title="Source" data={source} />
+            <LabelDiv title="Destination" data={destination} />
+            <LabelDiv title="Amount" data={amount} currency={currency} />
         </div>
     )
 }

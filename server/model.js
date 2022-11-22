@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const TransactionSchema = new mongoose.Schema({
-  id: {
+  source: {
     type: String,
     required: true,
   },
@@ -17,18 +17,22 @@ const TransactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  gasUser: {
+  timestamp: {
+    type: String,
+    required: true,
+  },
+  gasUsed: {
     type: Number,
     required: false,
   },
   receiptHash: {
-    type: Number,
+    type: String,
     required: false,
   }
 });
 
 const AddressSchema = new mongoose.Schema({
-  id: {
+  _id: {
     type: String,
     required: true,
   }
