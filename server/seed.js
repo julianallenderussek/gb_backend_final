@@ -62,6 +62,16 @@ const currentTransactions = [
       amount: 250,
       currency: "ETH",
       gasUsed: 30000
+    },
+    {
+      receiptHash: "0x39ae0a30kljaldkfa909012934j3i029iealjnfdkajnfdfadsf",
+      status: "SUCCESS",
+      timestamp: Date.now() - 200000,
+      source: addresses[3],
+      destination: addresses[1],
+      amount: 500,
+      currency: "ETH",
+      gasUsed: 30000
     }
   ]
 

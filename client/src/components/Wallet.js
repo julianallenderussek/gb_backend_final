@@ -6,7 +6,7 @@ const Wallet = () => {
     const { currentWallet, balance, getBalance } = useContext(AppContext)
     console.log(currentWallet, balance, getBalance);
     useEffect(() => {
-        getBalance()
+        getBalance(currentWallet)
     }, [])
 
     return (

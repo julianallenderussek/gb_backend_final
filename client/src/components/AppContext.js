@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { currentTransactions, addresses } from "../data";
 export const AppContext = React.createContext();
 
 export const AppContextProvider = ({ children }) => {

@@ -7,7 +7,7 @@ const getTransactionHistory = async (req, res) => {
 }
 
 const createTransaction = async (req,res) => {
-    const transaction = await Transaction.create(req.params)
+    const transaction = await Transaction.create(req.body)
     console.log(transaction);
     return res.status(200).json({ transaction: transaction})
 }

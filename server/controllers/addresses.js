@@ -7,10 +7,10 @@ const getAddresses = async (req, res) => {
 
 const getBalance = async (req, res) => {
     const wallet = req.params.address
-    console.log("LUKE");
-    console.log(req.params);
-    const transactions = await Transaction.find({destination: wallet })
-    
+    const transactions = await Transaction.find(
+        { $or: [ {destination: wallet }, {source: wallet }]}
+    )
+
     const plusTransactions = await transactions.filter(
         (trans) => trans.destination === wallet
     );
@@ -30,8 +30,6 @@ const getBalance = async (req, res) => {
     );
     
     const newBalance = plusSum - minusSum;
-    console.log(wallet, newBalance);
-
     return res.status(200).json({account: {
         address: wallet,
         balance: newBalance

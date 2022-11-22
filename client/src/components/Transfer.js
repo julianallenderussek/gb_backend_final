@@ -1,10 +1,11 @@
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from './AppContext';
 import { Transaction } from './Transactions';
 import "./Transfer.css"
 
-const Transfer =() => {
+const Transfer = () => {
     const { id } = useParams();
     const context = useContext(AppContext);
     const { currentWallet, setTransactions, balance,
@@ -12,26 +13,27 @@ const Transfer =() => {
     const [amount, setAmount] = useState("")
 
     // TO DO Terminar post transfer
+    useEffect(() => {
+        getBalance(currentWallet)
+    }, []);
 
-    const handleTransaction = (e) => {
+    const handleTransaction = async (e) => {
         console.log("receipt", receipt, "----" , "balance:", balance);
         if (amount > 0 && amount < balance) {
             const newTransaction = {
-                hash: "kajndfkjndakjnf9189hn19urnj",
+                hashReceipt: "kajndfkjndakjnf9189hn19urnj",
                 status: "SUCCESS",
                 timestamp: Date.now(),
-                from: currentWallet,
-                to: id,
-                value: amount,
+                source: currentWallet,
+                destination: id,
+                amount: amount,
                 currency: "ETH",
-                gas_user: 21000
+                gasUsed: 21000
             }
-            
-            console.log("newTransaction", newTransaction)
-            console.log([...transactions, newTransaction]);
-            setTransactions([...transactions, newTransaction])
-            getBalance()
-            setReceipt(newTransaction)
+            console.log(newTransaction);
+            const response = await axios.post("http://localhost:4000/transactions", newTransaction)
+            setReceipt(response.data.transaction)
+            getBalance(currentWallet)
         }
     }
 
@@ -42,10 +44,6 @@ const Transfer =() => {
         console.log(newAmount, typeof newAmount );
         setAmount(parseInt(e.target.value))
     }
-
-    useEffect(() => {
-        getBalance()
-    }, [])
     
     return (
         <div className='page-wrapper'>
@@ -69,9 +67,8 @@ const Transfer =() => {
                 </div>
             </div>
             {
-                receipt ? <Receipt receipt={receipt} /> : <></>
+                receipt ? <Receipt receipt={receipt}/> : <></>
             }
-            
         </div>
     );
 };
